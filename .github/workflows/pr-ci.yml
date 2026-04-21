@@ -19,6 +19,9 @@ jobs:
           cache: yarn
       # Node.js 22 설치, yarn 캐시 활성화 (두 번째 실행부터 빠름)
 
+      - run: corepack enable
+      # package.json의 packageManager 버전(yarn berry)으로 자동 전환
+
       - run: yarn install --immutable
       # yarn.lock 기준으로 설치, lock 파일 변경 불가 (CI 안전장치)
 

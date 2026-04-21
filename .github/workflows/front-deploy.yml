@@ -15,6 +15,9 @@ jobs:
           node-version: 22
           cache: yarn
 
+      - run: corepack enable
+      # package.json의 packageManager 버전(yarn berry)으로 자동 전환
+
       - run: yarn install --immutable
       - run: yarn build
       # dist/ 폴더 생성
