@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: corepack enable
+      # package.json의 packageManager 버전(yarn berry)으로 자동 전환
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: yarn
-
-      - run: corepack enable
-      # package.json의 packageManager 버전(yarn berry)으로 자동 전환
 
       - run: yarn install --immutable
       - run: yarn build
