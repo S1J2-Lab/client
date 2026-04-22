@@ -1,5 +1,4 @@
-import { css, Global, keyframes, ThemeProvider } from '@emotion/react';
-import type { ReactNode } from 'react';
+import { css, keyframes } from '@emotion/react';
 import { theme } from './theme';
 
 const fadeInUp = keyframes`
@@ -95,12 +94,3 @@ export const globalStyles = css`
     animation: ${pulseGentle} 2s ease-in-out infinite;
   }
 `;
-
-export function AppStyleProvider({ children }: { children: ReactNode }) {
-  return (
-    <ThemeProvider theme={theme}>
-      <Global styles={globalStyles} />
-      {children}
-    </ThemeProvider>
-  );
-}
