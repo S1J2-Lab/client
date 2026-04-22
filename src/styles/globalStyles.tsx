@@ -22,8 +22,6 @@ const pulseGentle = keyframes`
 `;
 
 export const globalStyles = css`
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
-
   *,
   *::before,
   *::after {
