@@ -794,14 +794,14 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["@exodus/bytes", [\
       ["npm:1.15.0", {\
-        "packageLocation": "../Users/jihyo/AppData/Local/Yarn/Berry/cache/@exodus-bytes-npm-1.15.0-28e5727c43-10c0.zip/node_modules/@exodus/bytes/",\
+        "packageLocation": "./.yarn/unplugged/@exodus-bytes-virtual-504e31fce1/node_modules/@exodus/bytes/",\
         "packageDependencies": [\
           ["@exodus/bytes", "npm:1.15.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
       ["virtual:107479fe738b46d9ba616f54ddd1760b0da6893116ebd6fabe5b569b96d6c7fe9f5cac028b0ae1963c7a652f448755a0d8c6ff2fad3c20530b39d427000e39ca#npm:1.15.0", {\
-        "packageLocation": "./.yarn/__virtual__/@exodus-bytes-virtual-504e31fce1/2/Users/jihyo/AppData/Local/Yarn/Berry/cache/@exodus-bytes-npm-1.15.0-28e5727c43-10c0.zip/node_modules/@exodus/bytes/",\
+        "packageLocation": "./.yarn/unplugged/@exodus-bytes-virtual-504e31fce1/node_modules/@exodus/bytes/",\
         "packageDependencies": [\
           ["@exodus/bytes", "virtual:107479fe738b46d9ba616f54ddd1760b0da6893116ebd6fabe5b569b96d6c7fe9f5cac028b0ae1963c7a652f448755a0d8c6ff2fad3c20530b39d427000e39ca#npm:1.15.0"],\
           ["@noble/hashes", null],\
@@ -2894,14 +2894,14 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["jsdom", [\
       ["npm:29.0.2", {\
-        "packageLocation": "./.yarn/unplugged/jsdom-virtual-512398eac8/node_modules/jsdom/",\
+        "packageLocation": "../Users/jihyo/AppData/Local/Yarn/Berry/cache/jsdom-npm-29.0.2-1a84ff6007-10c0.zip/node_modules/jsdom/",\
         "packageDependencies": [\
           ["jsdom", "npm:29.0.2"]\
         ],\
         "linkType": "SOFT"\
       }],\
       ["virtual:67bccc7d0bcfa1230f52b04f252953235f3247e8df364142a4b7724e7369b822323dc3148cf3825512a8c0b70e04e7501cbd67f5ac8193999d7bc7a9f219cccb#npm:29.0.2", {\
-        "packageLocation": "./.yarn/unplugged/jsdom-virtual-512398eac8/node_modules/jsdom/",\
+        "packageLocation": "./.yarn/__virtual__/jsdom-virtual-512398eac8/2/Users/jihyo/AppData/Local/Yarn/Berry/cache/jsdom-npm-29.0.2-1a84ff6007-10c0.zip/node_modules/jsdom/",\
         "packageDependencies": [\
           ["@asamuzakjp/css-color", "npm:5.1.11"],\
           ["@asamuzakjp/dom-selector", "npm:7.1.1"],\
