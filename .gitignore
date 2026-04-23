@@ -28,7 +28,6 @@ dist-ssr
 .yarn/*
 !.yarn/sdks
 !.yarn/versions
-.yarnrc.yml
 .pnp.*
 yarn-cache/
 
