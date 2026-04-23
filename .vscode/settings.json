@@ -8,4 +8,6 @@
   "js/ts.tsdk.promptToUseWorkspaceVersion": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true
+  // "typescript.tsdk": ".yarn/sdks/typescript/lib",
+  // "typescript.enablePromptUseWorkspaceTsdk": true
 }
