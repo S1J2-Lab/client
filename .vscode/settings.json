@@ -7,5 +7,6 @@
   "js/ts.tsdk.path": ".yarn/sdks/typescript/lib",
   "js/ts.tsdk.promptToUseWorkspaceVersion": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs"
 }
