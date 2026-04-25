@@ -24,12 +24,17 @@ dist-ssr
 *.sln
 *.sw?
 
-# Yarn Berry
-.yarn/*
-!.yarn/sdks
-!.yarn/versions
+# Yarn Berry (Non-Zero-Install)
 .pnp.*
-yarn-cache/
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# [수정] SDK와 Unplugged 폴더를 무시하여 Diff 방지
+.yarn/sdks/
+.yarn/unplugged/
 
 # env
 .env
