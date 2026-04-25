@@ -45,7 +45,6 @@ export function GlobalStyles() {
         textarea,
         select {
           border: 1px solid ${theme.colors.border};
-          outline: none;
         }
 
         a {
