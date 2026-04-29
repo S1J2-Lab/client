@@ -1,16 +1,12 @@
 import styled from '@emotion/styled';
-import type { ReactNode } from 'react';
+import type { HTMLAttributes } from 'react';
 import { theme } from '../../styles/theme';
 
 const CARD_PADDING = '20px';
 const CARD_GAP = '6px';
 
-interface CardProps {
-  children: ReactNode;
-}
-
-export function Card({ children, ...props }: CardProps) {
-  return <CardContainer {...props}>{children}</CardContainer>;
+export function Card({ children, ...rest }: HTMLAttributes<HTMLDivElement>) {
+  return <CardContainer {...rest}>{children}</CardContainer>;
 }
 
 const CardContainer = styled.div`
