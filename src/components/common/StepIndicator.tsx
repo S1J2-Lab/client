@@ -15,21 +15,36 @@ function getStepState(step: number, currentStep: number): StepState {
   return 'todo';
 }
 
+function getStepAriaLabel(step: number, state: StepState) {
+  if (state === 'done') return `${step}단계 완료`;
+  if (state === 'active') return `${step}단계 현재 단계`;
+  return `${step}단계 예정`;
+}
+
 export function StepIndicator({
   currentStep,
   totalSteps = 4,
 }: StepIndicatorProps) {
+  const safeTotalSteps = Math.max(1, totalSteps);
+  const safeCurrentStep = Math.min(Math.max(currentStep, 1), safeTotalSteps);
   return (
     <Container>
-      <Row>
+      <Row role="list" aria-label="진행 단계">
         <Line />
 
-        {Array.from({ length: totalSteps }, (_, index) => {
+        {Array.from({ length: safeTotalSteps }, (_, index) => {
           const step = index + 1;
-          const state = getStepState(step, currentStep);
+          const state = getStepState(step, safeCurrentStep);
+          const isActive = state === 'active';
 
           return (
-            <StepWrapper key={step} $state={state}>
+            <StepWrapper
+              key={step}
+              $state={state}
+              role="listitem"
+              aria-current={isActive ? 'step' : undefined}
+              aria-label={getStepAriaLabel(step, state)}
+            >
               {state === 'done' ? <Check size={14} strokeWidth={3} /> : step}
             </StepWrapper>
           );
