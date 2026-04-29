@@ -9,12 +9,6 @@ const ICON_ONLY_SIZE: Record<Size, string> = {
   lg: '40px',
 };
 
-const BORDER_RADIUS: Record<Size, string> = {
-  sm: '8px',
-  md: '10px',
-  lg: '12px',
-};
-
 const ICON_SIZE: Record<Size, string> = {
   sm: '14px',
   md: '16px',
@@ -120,15 +114,20 @@ function getVariantStyle($variant: Variant, $tone: GhostTone, theme: Theme) {
   }
 }
 
-function getSizeStyle($size: Size, $isIconOnly: boolean) {
+function getSizeStyle($size: Size, $isIconOnly: boolean, theme: Theme) {
   if ($isIconOnly) {
     const dimension = ICON_ONLY_SIZE[$size];
+    const radiusMap: Record<Size, string> = {
+      sm: theme.radius.sm,
+      md: theme.radius.sm,
+      lg: theme.radius.md,
+    };
     return css`
       width: ${dimension};
       height: ${dimension};
       padding: 0;
       flex-shrink: 0;
-      border-radius: ${BORDER_RADIUS[$size]};
+      border-radius: ${radiusMap[$size]};
       svg {
         width: ${ICON_SIZE[$size]};
         height: ${ICON_SIZE[$size]};
@@ -141,7 +140,7 @@ function getSizeStyle($size: Size, $isIconOnly: boolean) {
       return css`
         padding: 6px 10px;
         font-size: 12px;
-        border-radius: ${BORDER_RADIUS.sm};
+        border-radius: ${theme.radius.sm};
         gap: 4px;
         svg {
           width: ${ICON_SIZE.sm};
@@ -152,7 +151,7 @@ function getSizeStyle($size: Size, $isIconOnly: boolean) {
       return css`
         padding: 8px 12px;
         font-size: 12px;
-        border-radius: ${BORDER_RADIUS.md};
+        border-radius: ${theme.radius.sm};
         gap: 6px;
         svg {
           width: ${ICON_SIZE.md};
@@ -163,7 +162,7 @@ function getSizeStyle($size: Size, $isIconOnly: boolean) {
       return css`
         padding: 14px 20px;
         font-size: 15px;
-        border-radius: ${BORDER_RADIUS.lg};
+        border-radius: ${theme.radius.md};
         gap: 6px;
         svg {
           width: ${ICON_SIZE.lg};
@@ -194,7 +193,7 @@ const StyledButton = styled.button<{
   }
 
   ${({ $variant, $tone, theme }) => getVariantStyle($variant, $tone, theme)}
-  ${({ $size, $isIconOnly }) => getSizeStyle($size, $isIconOnly)}
+  ${({ $size, $isIconOnly, theme }) => getSizeStyle($size, $isIconOnly, theme)}
   ${({ $width }) =>
     $width &&
     css`
