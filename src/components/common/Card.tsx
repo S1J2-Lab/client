@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react';
 import styled from '@emotion/styled';
+import type { ReactNode } from 'react';
 import { theme } from '../../styles/theme';
 
 const CARD_PADDING = '20px';
@@ -7,6 +7,10 @@ const CARD_GAP = '6px';
 
 interface CardProps {
   children: ReactNode;
+}
+
+export function Card({ children, ...props }: CardProps) {
+  return <CardContainer {...props}>{children}</CardContainer>;
 }
 
 const CardContainer = styled.div`
@@ -18,7 +22,3 @@ const CardContainer = styled.div`
   flex-direction: column;
   gap: ${CARD_GAP};
 `;
-
-export function Card({ children, ...props }: CardProps) {
-  return <CardContainer {...props}>{children}</CardContainer>;
-}
