@@ -32,6 +32,7 @@ const Container = styled.header`
 const Side = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
 `;
 
 const Title = styled.h1`
