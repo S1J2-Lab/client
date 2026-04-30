@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import type { ReactNode } from 'react';
-import { theme } from '../../styles/theme';
+
+const HEADER_HEIGHT = '56px';
 
 interface HeaderProps {
   title: string;
@@ -19,16 +20,16 @@ export function Header({ title, left, right }: HeaderProps) {
 }
 
 const Container = styled.header`
-  display: flex;
+  display: grid;
+  grid-template-columns: 32px 1fr 32px;
   align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  background: ${theme.colors.surface};
-  border-bottom: 1px solid ${theme.colors.borderLight};
+  height: ${HEADER_HEIGHT};
+  padding: 0 20px;
+  background: ${({ theme }) => theme.colors.surface};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.borderLight};
 `;
 
 const Side = styled.div`
-  width: 32px;
   display: flex;
   align-items: center;
 `;
@@ -38,4 +39,7 @@ const Title = styled.h1`
   text-align: center;
   font-size: 16px;
   font-weight: 700;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 `;
