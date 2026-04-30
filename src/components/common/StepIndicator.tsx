@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { theme } from '../../styles/theme';
 import { Check } from 'lucide-react';
 
 interface StepIndicatorProps {
@@ -56,7 +55,7 @@ export function StepIndicator({
 
 const Container = styled.div`
   padding: 20px;
-  background: ${theme.colors.surface};
+  background: ${({ theme }) => theme.colors.surface};
 `;
 
 const Row = styled.div`
@@ -72,7 +71,7 @@ const Line = styled.div`
   left: 14px;
   right: 14px;
   height: 2px;
-  background: #e2e8f0;
+  background: ${({ theme }) => theme.colors.border};
   transform: translateY(-50%);
   z-index: 0;
 `;
@@ -80,7 +79,7 @@ const Line = styled.div`
 const StepWrapper = styled.div<{ $state: StepState }>`
   width: 28px;
   height: 28px;
-  border-radius: ${theme.radius.full};
+  border-radius: ${({ theme }) => theme.radius.full};
 
   display: inline-flex;
   align-items: center;
@@ -90,14 +89,14 @@ const StepWrapper = styled.div<{ $state: StepState }>`
   font-weight: 700;
   z-index: 1;
 
-  background: ${({ $state }) =>
+  background: ${({ theme, $state }) =>
     $state === 'active' || $state === 'done'
       ? theme.colors.primary
-      : '#E2E8F0'};
+      : theme.colors.border};
 
-  color: ${({ $state }) =>
-    $state === 'todo' ? theme.colors.textMuted : '#fff'};
+  color: ${({ theme, $state }) =>
+    $state === 'todo' ? theme.colors.textMuted : theme.colors.surface};
 
-  box-shadow: ${({ $state }) =>
+  box-shadow: ${({ theme, $state }) =>
     $state === 'active' ? `0 0 0 4px ${theme.colors.primaryLight}` : 'none'};
 `;
