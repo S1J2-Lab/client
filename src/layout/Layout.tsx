@@ -22,6 +22,7 @@ const Wrapper = styled.div`
 const LayoutWrapper = styled.main`
   width: 100%;
   max-width: 420px;
+  min-width: 320px;
   min-height: 100vh;
   margin: 0 auto;
   display: flex;
