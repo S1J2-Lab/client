@@ -16,18 +16,32 @@ export function Input({
   startInteractive = false,
   endInteractive = false,
   width,
+  disabled,
   ...rest
 }: InputProps) {
   return (
     <Wrapper $width={width}>
       {start && (
-        <Slot $position="start" $interactive={startInteractive}>
+        <Slot
+          $position="start"
+          $interactive={startInteractive}
+          $disabled={!!disabled}
+        >
           {start}
         </Slot>
       )}
-      <StyledInput $hasStart={!!start} $hasEnd={!!end} {...rest} />
+      <StyledInput
+        $hasStart={!!start}
+        $hasEnd={!!end}
+        disabled={disabled}
+        {...rest}
+      />
       {end && (
-        <Slot $position="end" $interactive={endInteractive}>
+        <Slot
+          $position="end"
+          $interactive={endInteractive}
+          $disabled={!!disabled}
+        >
           {end}
         </Slot>
       )}
@@ -42,14 +56,20 @@ const Wrapper = styled.div<{ $width?: CSSProperties['width'] }>`
   width: ${({ $width }) => $width ?? '100%'};
 `;
 
-const Slot = styled.span<{ $position: 'start' | 'end'; $interactive: boolean }>`
+const Slot = styled.span<{
+  $position: 'start' | 'end';
+  $interactive: boolean;
+  $disabled: boolean;
+}>`
   position: absolute;
   display: flex;
   align-items: center;
   color: ${theme.colors.textMuted};
   font-size: 14px;
   font-weight: 500;
-  pointer-events: ${({ $interactive }) => ($interactive ? 'auto' : 'none')};
+  pointer-events: ${({ $interactive, $disabled }) =>
+    $disabled ? 'none' : $interactive ? 'auto' : 'none'};
+  opacity: ${({ $disabled }) => ($disabled ? 0.5 : 1)};
   ${({ $position }) => ($position === 'start' ? 'left: 14px;' : 'right: 14px;')}
 `;
 
