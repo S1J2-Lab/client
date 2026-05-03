@@ -1,14 +1,17 @@
 import styled from '@emotion/styled';
-import type { ReactNode } from 'react';
 
 interface LayoutProps {
-  children: ReactNode;
+  header?: React.ReactNode;
+  children: React.ReactNode;
 }
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ header, children }: LayoutProps) {
   return (
     <Wrapper>
-      <LayoutWrapper>{children}</LayoutWrapper>
+      <LayoutWrapper>
+        {header}
+        <PageContent>{children}</PageContent>
+      </LayoutWrapper>
     </Wrapper>
   );
 }
@@ -29,4 +32,9 @@ const LayoutWrapper = styled.main`
   flex-direction: column;
   overflow-x: hidden;
   background-color: ${({ theme }) => theme.colors.surface};
+`;
+
+const PageContent = styled.section`
+  flex: 1;
+  padding: 16px 20px 24px;
 `;
