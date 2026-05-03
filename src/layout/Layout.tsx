@@ -1,16 +1,28 @@
 import styled from '@emotion/styled';
 
+type ContentBackground = 'surface' | 'bg';
+
 interface LayoutProps {
   header?: React.ReactNode;
+  stepIndicator?: React.ReactNode;
+  contentBackground?: ContentBackground;
   children: React.ReactNode;
 }
 
-export function Layout({ header, children }: LayoutProps) {
+export function Layout({
+  header,
+  stepIndicator,
+  contentBackground = 'bg',
+  children,
+}: LayoutProps) {
   return (
     <Wrapper>
       <LayoutWrapper>
         {header}
-        <PageContent>{children}</PageContent>
+        {stepIndicator}
+        <PageContent $contentBackground={contentBackground}>
+          {children}
+        </PageContent>
       </LayoutWrapper>
     </Wrapper>
   );
@@ -20,6 +32,7 @@ const Wrapper = styled.div`
   min-height: 100dvh;
   display: flex;
   justify-content: center;
+  background-color: ${({ theme }) => theme.colors.border};
 `;
 
 const LayoutWrapper = styled.main`
@@ -34,7 +47,9 @@ const LayoutWrapper = styled.main`
   background-color: ${({ theme }) => theme.colors.surface};
 `;
 
-const PageContent = styled.section`
+const PageContent = styled.div<{ $contentBackground: ContentBackground }>`
   flex: 1;
-  padding: 16px 20px 24px;
+  padding: 24px 20px;
+  background-color: ${({ theme, $contentBackground }) =>
+    theme.colors[$contentBackground]};
 `;
