@@ -12,47 +12,63 @@ const MOCK_ADDRESSES: Address[] = [
     road: '서울특별시 강남구 테헤란로 456',
     jibun: '서울특별시 강남구 역삼동 456-78',
   },
+  {
+    road: '서울특별시 강남구 테헤란로 456',
+    jibun: '서울특별시 강남구 역삼동 456-78',
+  },
+  {
+    road: '서울특별시 강남구 테헤란로 456',
+    jibun: '서울특별시 강남구 역삼동 456-78',
+  },
+  {
+    road: '서울특별시 강남구 테헤란로 456',
+    jibun: '서울특별시 강남구 역삼동 456-78',
+  },
+  {
+    road: '서울특별시 강남구 테헤란로 456',
+    jibun: '서울특별시 강남구 역삼동 456-78',
+  },
+  {
+    road: '서울특별시 강남구 테헤란로 456',
+    jibun: '서울특별시 강남구 역삼동 456-78',
+  },
+  {
+    road: '서울특별시 강남구 테헤란로 456',
+    jibun: '서울특별시 강남구 역삼동 456-78',
+  },
+  {
+    road: '서울특별시 강남구 테헤란로 456',
+    jibun: '서울특별시 강남구 역삼동 456-78',
+  },
 ];
 
 export function useAddressSearch() {
   const [keyword, setKeyword] = useState('');
   const [isSearched, setIsSearched] = useState(false);
-  const [page, setPage] = useState(1);
+  const [visibleCount, setVisibleCount] = useState(ADDRESS_PAGE_SIZE);
 
-  const isSearchDisabled = keyword.trim().length === 0;
-  const totalPage = Math.ceil(MOCK_ADDRESSES.length / ADDRESS_PAGE_SIZE);
-
-  const startIndex = (page - 1) * ADDRESS_PAGE_SIZE;
-  const currentAddresses = MOCK_ADDRESSES.slice(
-    startIndex,
-    startIndex + ADDRESS_PAGE_SIZE,
-  );
+  const currentAddresses = MOCK_ADDRESSES.slice(0, visibleCount);
+  const hasNextPage = visibleCount < MOCK_ADDRESSES.length;
 
   const handleSearch = () => {
-    if (isSearchDisabled) return;
-
     setIsSearched(true);
-    setPage(1);
+    setVisibleCount(ADDRESS_PAGE_SIZE);
   };
 
-  const handlePrevPage = () => {
-    setPage((prev) => Math.max(prev - 1, 1));
-  };
-
-  const handleNextPage = () => {
-    setPage((prev) => Math.min(prev + 1, totalPage));
+  const loadMoreAddresses = () => {
+    setVisibleCount((prev) =>
+      Math.min(prev + ADDRESS_PAGE_SIZE, MOCK_ADDRESSES.length),
+    );
   };
 
   return {
+    handleSearch,
     keyword,
     setKeyword,
     isSearched,
-    page,
-    totalPage,
     currentAddresses,
-    isSearchDisabled,
-    handleSearch,
-    handlePrevPage,
-    handleNextPage,
+    hasNextPage,
+    loadMoreAddresses,
+    totalCount: MOCK_ADDRESSES.length,
   };
 }

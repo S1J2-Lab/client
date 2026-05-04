@@ -1,23 +1,52 @@
 import styled from '@emotion/styled';
 import { Search } from 'lucide-react';
-import { Button } from '../../components/common/Button';
 import { Card } from '../../components/common/Card';
 import { Input } from '../../components/common/Input';
 import { useAddressSearch } from '../../hooks/useAddressSearch';
+import { useEffect, useRef } from 'react';
 
 export function AddressSection() {
   const {
     keyword,
     setKeyword,
     isSearched,
-    page,
-    totalPage,
     currentAddresses,
-    isSearchDisabled,
+    hasNextPage,
+    loadMoreAddresses,
     handleSearch,
-    handlePrevPage,
-    handleNextPage,
   } = useAddressSearch();
+
+  const resultAreaRef = useRef<HTMLDivElement | null>(null);
+  const observerTargetRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isSearched || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          loadMoreAddresses();
+        }
+      },
+      {
+        root: resultAreaRef.current,
+        rootMargin: '40px',
+        threshold: 0.1,
+      },
+    );
+
+    const target = observerTargetRef.current;
+
+    if (target) {
+      observer.observe(target);
+    }
+
+    return () => {
+      if (target) {
+        observer.unobserve(target);
+      }
+    };
+  }, [isSearched, hasNextPage, loadMoreAddresses]);
 
   return (
     <Card>
@@ -25,7 +54,7 @@ export function AddressSection() {
 
       <AddressRow>
         <Input
-          placeholder="주소를 입력해주세요"
+          placeholder="서울특별시 강남구 테헤란로 123"
           value={keyword}
           onChange={(event) => setKeyword(event.target.value)}
           onKeyDown={(event) => {
@@ -33,51 +62,29 @@ export function AddressSection() {
               handleSearch();
             }
           }}
-          start={<Search size={16} />}
+          endInteractive
+          end={
+            <SearchIconButton
+              type="button"
+              onClick={handleSearch}
+              aria-label="주소 검색"
+            >
+              <Search size={16} />
+            </SearchIconButton>
+          }
         />
-
-        <SearchButtonWrapper>
-          <Button
-            variant="primary"
-            size="lg"
-            width="105px"
-            onClick={handleSearch}
-            disabled={isSearchDisabled}
-          >
-            주소 검색
-          </Button>
-        </SearchButtonWrapper>
       </AddressRow>
 
       {isSearched && (
-        <AddressResultArea>
+        <AddressResultArea ref={resultAreaRef}>
           {currentAddresses.map((address) => (
-            <AddressItem key={address.road}>
+            <AddressItem key={address.road} type="button">
               <RoadAddress>{address.road}</RoadAddress>
               <JibunAddress>(지번 주소) {address.jibun}</JibunAddress>
             </AddressItem>
           ))}
 
-          <Pagination>
-            <PageButton
-              type="button"
-              onClick={handlePrevPage}
-              disabled={page === 1}
-            >
-              &lt;
-            </PageButton>
-
-            <CurrentPage>{page}</CurrentPage>
-            <span>/ {totalPage}</span>
-
-            <PageButton
-              type="button"
-              onClick={handleNextPage}
-              disabled={page === totalPage}
-            >
-              &gt;
-            </PageButton>
-          </Pagination>
+          {hasNextPage && <ObserverTarget ref={observerTargetRef} />}
         </AddressResultArea>
       )}
     </Card>
@@ -98,18 +105,17 @@ const AddressRow = styled.div`
   align-items: center;
 `;
 
-const SearchButtonWrapper = styled.div`
-  button {
-    font-size: 14px;
-    font-weight: 500;
-  }
-`;
-
 const AddressResultArea = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
   margin-top: 16px;
+
+  max-height: 480px;
+  overflow-y: auto;
+
+  padding-right: 4px;
+  scrollbar-gutter: stable;
 `;
 
 const AddressItem = styled.button`
@@ -134,29 +140,17 @@ const JibunAddress = styled.p`
   color: ${({ theme }) => theme.colors.textMuted};
 `;
 
-const Pagination = styled.div`
+const ObserverTarget = styled.div`
+  height: 1px;
+`;
+
+const SearchIconButton = styled.button`
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 600;
-`;
-
-const CurrentPage = styled.span`
-  color: ${({ theme }) => theme.colors.primary};
-`;
-
-const PageButton = styled.button`
-  color: ${({ theme }) => theme.colors.text};
-  font-size: 18px;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.textMuted};
   background: none;
   border: 0;
-  padding: 4px;
+  padding: 0;
   cursor: pointer;
-
-  &:disabled {
-    color: ${({ theme }) => theme.colors.textMuted};
-    cursor: not-allowed;
-  }
 `;

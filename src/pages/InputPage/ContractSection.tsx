@@ -2,8 +2,8 @@ import styled from '@emotion/styled';
 import { useState } from 'react';
 import { Card } from '../../components/common/Card';
 import { Input } from '../../components/common/Input';
-import { ContractTypeSelector } from '../../components/feature/ContractTypeSelector';
-import { DatePickerInput } from '../../components/feature/DatePickerInput';
+import { ContractTypeSelector } from '../../components/feature/InputPage/ContractTypeSelector';
+import { DatePickerInput } from '../../components/feature/InputPage/DatePickerInput';
 import type { ContractType } from '../../constants/contract';
 
 export function ContractSection() {
@@ -28,11 +28,12 @@ export function ContractSection() {
       </FieldGroup>
 
       <FieldGroup>
-        <Label>보증금</Label>
+        <Label htmlFor="deposit">보증금</Label>
         <Input
           id="deposit"
           value={deposit}
           onChange={(event) => setDeposit(event.target.value)}
+          inputMode="numeric"
           placeholder="보증금을 입력해주세요"
           start={<span>₩</span>}
           end={<span>원</span>}
