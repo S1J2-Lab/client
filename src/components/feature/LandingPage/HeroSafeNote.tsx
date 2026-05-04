@@ -5,7 +5,7 @@ export function HeroSafeNote() {
   return (
     <Wrapper>
       <SafeNote>
-        <Lock size={12} />
+        <Lock size={12} aria-hidden="true" />
         입력하신 정보는 안전하게 보호돼요.
       </SafeNote>
     </Wrapper>

@@ -4,7 +4,7 @@ import { ShieldCheck } from 'lucide-react';
 export function HeroBadge() {
   return (
     <Badge>
-      <ShieldCheck size={12} />
+      <ShieldCheck size={12} aria-hidden="true" />
       전세 사기 예방, 첫걸음
     </Badge>
   );
