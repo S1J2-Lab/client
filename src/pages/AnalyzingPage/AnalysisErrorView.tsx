@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import { AlertTriangle, CircleAlert, RotateCcw } from 'lucide-react';
-import type { AnalysisErrorCode } from '../../../types/analysis';
-import { ANALYSIS_ERROR_MESSAGES } from '../../../constants/analysisErrorMessages';
-import { Button } from '../../common/Button';
+import type { AnalysisErrorCode } from '../../types/analysis';
+import { ANALYSIS_ERROR_MESSAGES } from '../../constants/analysisErrorMessages';
+import { Button } from '../../components/common/Button';
 
 interface AnalysisErrorViewProps {
   errorCode: AnalysisErrorCode;

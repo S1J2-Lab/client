@@ -1,7 +1,7 @@
-import { CircularProgress } from '../../../components/feature/AnalyzingPage/CircularProgress';
-import { AnalysisStepList } from '../../../components/feature/AnalyzingPage/AnalysisStepList';
-import { AnalysisNotice } from '../../../components/feature/AnalyzingPage/AnalysisNotice';
-import type { AnalysisStep } from '../../../types/analysis';
+import { CircularProgress } from '../../components/feature/AnalyzingPage/CircularProgress';
+import { AnalysisStepList } from '../../components/feature/AnalyzingPage/AnalysisStepList';
+import { AnalysisNotice } from '../../components/feature/AnalyzingPage/AnalysisNotice';
+import type { AnalysisStep } from '../../types/analysis';
 import styled from '@emotion/styled';
 
 interface AnalysisLoadingViewProps {
