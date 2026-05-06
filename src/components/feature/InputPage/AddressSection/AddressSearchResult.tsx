@@ -8,16 +8,17 @@ interface AddressSearchResultProps {
   addresses: Address[];
   selectedAddress: Address | null;
   isLoading: boolean;
+  isFetchingMore: boolean;
   errorMessage: string;
   hasNextPage: boolean;
   onLoadMore: () => void;
   onSelectAddress: (address: Address) => void;
 }
-
 export function AddressSearchResult({
   addresses,
   selectedAddress,
   isLoading,
+  isFetchingMore,
   errorMessage,
   hasNextPage,
   onLoadMore,
@@ -29,7 +30,7 @@ export function AddressSearchResult({
   useInfiniteAddressScroll({
     rootRef: resultAreaRef,
     targetRef: observerTargetRef,
-    enabled: hasNextPage && !isLoading && !errorMessage,
+    enabled: hasNextPage && !isLoading && !isFetchingMore && !errorMessage,
     onIntersect: onLoadMore,
   });
 
@@ -66,6 +67,7 @@ export function AddressSearchResult({
       {!isLoading && !errorMessage && hasNextPage && (
         <ObserverTarget ref={observerTargetRef} />
       )}
+      {isFetchingMore && <NoticeText>주소를 더 불러오고 있어요.</NoticeText>}
     </AddressResultArea>
   );
 }

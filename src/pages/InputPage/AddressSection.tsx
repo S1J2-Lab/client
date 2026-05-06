@@ -23,6 +23,7 @@ export function AddressSection({
     loadMoreAddresses,
     handleSearch,
     isLoading,
+    isFetchingMore,
     errorMessage,
   } = useAddressSearch();
 
@@ -46,6 +47,7 @@ export function AddressSection({
           addresses={currentAddresses}
           selectedAddress={selectedAddress}
           isLoading={isLoading}
+          isFetchingMore={isFetchingMore}
           errorMessage={errorMessage}
           hasNextPage={hasNextPage}
           onLoadMore={loadMoreAddresses}
