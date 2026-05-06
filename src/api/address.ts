@@ -1,20 +1,21 @@
 import axios from 'axios';
-import { BASE_URL } from './config';
+import { BASE_URL, API_TIMEOUT } from './config';
 import type { Address } from '../types/address';
 
-interface AddressResponse {
+interface AddressSearchResponse {
   data: {
     results: Address[];
   };
 }
 
 export async function searchAddress(query: string): Promise<Address[]> {
-  const { data } = await axios.get<AddressResponse>(
+  const { data } = await axios.get<AddressSearchResponse>(
     `${BASE_URL}/address/search`,
     {
       params: {
         query,
       },
+      timeout: API_TIMEOUT,
     },
   );
 
