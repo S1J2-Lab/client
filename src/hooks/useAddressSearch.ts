@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { searchAddress } from '../api/address';
 import { getApiErrorMessage } from '../api/error';
 import type { Address } from '../types/address';
+import type { ApiError } from '../api/error';
 
 const FIRST_PAGE = 1;
 const PAGE_SIZE = 10;
@@ -38,7 +39,7 @@ export function useAddressSearch() {
     } catch (error) {
       setCurrentAddresses([]);
       setHasNextPage(false);
-      setErrorMessage(getApiErrorMessage(error));
+      setErrorMessage(getApiErrorMessage(error as ApiError));
     } finally {
       setIsLoading(false);
     }
@@ -59,7 +60,7 @@ export function useAddressSearch() {
       setCurrentPage(nextPage);
       setHasNextPage(addresses.length === PAGE_SIZE);
     } catch (error) {
-      setErrorMessage(getApiErrorMessage(error));
+      setErrorMessage(getApiErrorMessage(error as ApiError));
     } finally {
       setIsFetchingMore(false);
     }

@@ -24,10 +24,47 @@ export interface ApiError {
   nonMasked?: string[];
 }
 
-export function normalizeApiError(
-  data: ApiErrorResponse,
-  status?: number,
-): ApiError {
+export const DEFAULT_ERROR: ApiError = {
+  code: 'UNKNOWN_ERROR',
+  message: '알 수 없는 오류가 발생했어요.',
+};
+
+export const NETWORK_ERROR: ApiError = {
+  code: 'NETWORK_ERROR',
+  message: '네트워크 연결을 확인해주세요.',
+};
+
+function isRecord(data: unknown): data is Record<string, unknown> {
+  return typeof data === 'object' && data !== null;
+}
+
+function isApiErrorResponse(data: unknown): data is ApiErrorResponse {
+  if (!isRecord(data)) return false;
+
+  if (
+    typeof data.status === 'number' &&
+    typeof data.code === 'string' &&
+    typeof data.message === 'string'
+  ) {
+    return true;
+  }
+
+  if (data.status !== 'error' || !isRecord(data.error)) return false;
+
+  return (
+    typeof data.error.code === 'string' &&
+    typeof data.error.message === 'string'
+  );
+}
+
+export function normalizeApiError(data: unknown, status?: number): ApiError {
+  if (!isApiErrorResponse(data)) {
+    return {
+      ...DEFAULT_ERROR,
+      status,
+    };
+  }
+
   if (data.status === 'error') {
     return {
       status,
@@ -45,8 +82,6 @@ export function normalizeApiError(
   };
 }
 
-export function getApiErrorMessage(error: unknown) {
-  const apiError = error as ApiError;
-
-  return apiError.message;
+export function getApiErrorMessage(error: ApiError) {
+  return error.message;
 }

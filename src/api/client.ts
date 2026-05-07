@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_TIMEOUT, BASE_URL } from './config';
-import { normalizeApiError, type ApiErrorResponse } from './error';
+import { NETWORK_ERROR, normalizeApiError } from './error';
 
 export const apiClient = axios.create({
   baseURL: BASE_URL,
@@ -10,18 +10,12 @@ export const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (!axios.isAxiosError<ApiErrorResponse>(error)) {
-      return Promise.reject({
-        code: 'UNKNOWN_ERROR',
-        message: '알 수 없는 오류가 발생했어요.',
-      });
+    if (!axios.isAxiosError(error)) {
+      return Promise.reject(normalizeApiError(error));
     }
 
     if (!error.response) {
-      return Promise.reject({
-        code: 'NETWORK_ERROR',
-        message: '네트워크 연결을 확인해주세요.',
-      });
+      return Promise.reject(NETWORK_ERROR);
     }
 
     return Promise.reject(
