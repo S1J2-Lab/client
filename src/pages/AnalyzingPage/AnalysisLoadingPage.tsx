@@ -1,0 +1,51 @@
+import styled from '@emotion/styled';
+import { useNavigate } from 'react-router-dom';
+import { useAnalysisProgress } from '../../hooks/useAnalysisProgress';
+import type {
+  AnalysisErrorCode,
+  AnalysisPageStatus,
+} from '../../types/analysis';
+import { AnalysisLoadingView } from './AnalysisLoadingView';
+import { AnalysisErrorView } from './AnalysisErrorView';
+import { useEffect, useState } from 'react';
+
+export function AnalysisLoadingPage() {
+  const { progress, steps, isCompleted, resetProgress } = useAnalysisProgress();
+  const navigate = useNavigate();
+  const [pageStatus, setPageStatus] = useState<AnalysisPageStatus>('loading');
+
+  const [errorCode] = useState<AnalysisErrorCode>('API_UNAVAILABLE');
+
+  useEffect(() => {
+    if (pageStatus !== 'loading') return;
+    if (!isCompleted) return;
+
+    const timer = setTimeout(() => {
+      navigate('/result');
+    }, 700);
+
+    return () => clearTimeout(timer);
+  }, [isCompleted, navigate, pageStatus]);
+
+  const handleRetry = () => {
+    resetProgress?.();
+    setPageStatus('loading');
+
+    // TODO: 나중에 여기서 분석 재요청 API 호출
+    // requestAnalysis();
+  };
+
+  return (
+    <PageWrapper>
+      {pageStatus === 'error' ? (
+        <AnalysisErrorView errorCode={errorCode} onRetry={handleRetry} />
+      ) : (
+        <AnalysisLoadingView progress={progress} steps={steps} />
+      )}
+    </PageWrapper>
+  );
+}
+
+const PageWrapper = styled.main`
+  padding: 32px 20px 36px;
+`;
