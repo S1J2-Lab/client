@@ -1,24 +1,10 @@
 import { useCallback, useState } from 'react';
-import { type AxiosError } from 'axios';
 import { searchAddress } from '../api/address';
+import { getApiErrorMessage } from '../api/error';
 import type { Address } from '../types/address';
 
 const FIRST_PAGE = 1;
 const PAGE_SIZE = 10;
-
-interface AddressErrorResponse {
-  status: 'error';
-  error: {
-    code: string;
-    message: string;
-  };
-}
-
-const getAddressErrorMessage = (error: unknown) => {
-  const axiosError = error as AxiosError<AddressErrorResponse>;
-
-  return axiosError.response!.data.error.message;
-};
 
 export function useAddressSearch() {
   const [keyword, setKeyword] = useState('');
@@ -52,7 +38,7 @@ export function useAddressSearch() {
     } catch (error) {
       setCurrentAddresses([]);
       setHasNextPage(false);
-      setErrorMessage(getAddressErrorMessage(error));
+      setErrorMessage(getApiErrorMessage(error));
     } finally {
       setIsLoading(false);
     }
@@ -73,7 +59,7 @@ export function useAddressSearch() {
       setCurrentPage(nextPage);
       setHasNextPage(addresses.length === PAGE_SIZE);
     } catch (error) {
-      setErrorMessage(getAddressErrorMessage(error));
+      setErrorMessage(getApiErrorMessage(error));
     } finally {
       setIsFetchingMore(false);
     }
