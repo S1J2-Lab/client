@@ -58,7 +58,7 @@ export function FileItemCard({
           <FileName>{name}</FileName>
           <SubRow>
             {status === 'ok' ? (
-              <Tag variant="success">정상</Tag>
+              <Tag variant="safe">정상</Tag>
             ) : (
               <WarningBadge>주의 필요</WarningBadge>
             )}
