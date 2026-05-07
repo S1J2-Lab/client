@@ -29,6 +29,7 @@ jobs:
         run: yarn build
         env:
           VITE_APP_TITLE: ${{ secrets.VITE_APP_TITLE }}
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
       # dist/ 폴더 생성
 
       - name: Configure AWS credentials
