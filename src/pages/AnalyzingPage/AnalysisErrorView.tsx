@@ -4,11 +4,13 @@ import { Button } from '../../components/common/Button';
 
 interface AnalysisErrorViewProps {
   errorMessage: string;
+  buttonText?: string;
   onRetry: () => void;
 }
 
 export function AnalysisErrorView({
   errorMessage,
+  buttonText = '다시 분석하기',
   onRetry,
 }: AnalysisErrorViewProps) {
   return (
@@ -32,7 +34,7 @@ export function AnalysisErrorView({
           iconStart={<RotateCcw size={18} />}
           onClick={onRetry}
         >
-          다시 분석하기
+          {buttonText}
         </Button>
       </ButtonWrapper>
     </ErrorWrapper>

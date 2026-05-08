@@ -16,6 +16,7 @@ export function AnalysisLoadingPage() {
 
   const state = location.state as AnalysisLocationState | null;
   const sessionId = state?.sessionId ?? null;
+  const isSessionIdMissing = !sessionId;
 
   const [pageStatus, setPageStatus] = useState<AnalysisPageStatus>('loading');
   const [errorMessage, setErrorMessage] = useState('');
@@ -42,6 +43,11 @@ export function AnalysisLoadingPage() {
   });
 
   const handleRetry = () => {
+    if (isSessionIdMissing) {
+      navigate('/input');
+      return;
+    }
+
     resetProgress();
     setErrorMessage('');
     setPageStatus('loading');
@@ -51,7 +57,13 @@ export function AnalysisLoadingPage() {
   return (
     <PageWrapper>
       {pageStatus === 'error' ? (
-        <AnalysisErrorView errorMessage={errorMessage} onRetry={handleRetry} />
+        <AnalysisErrorView
+          errorMessage={errorMessage}
+          buttonText={
+            isSessionIdMissing ? '정보 다시 입력하기' : '다시 분석하기'
+          }
+          onRetry={handleRetry}
+        />
       ) : (
         <AnalysisLoadingView progress={progress} steps={steps} />
       )}
