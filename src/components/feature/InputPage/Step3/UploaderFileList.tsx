@@ -125,8 +125,7 @@ const DragHandle = styled.div<{ $isLocked: boolean }>`
   justify-content: center;
   width: 24px;
   height: 30px;
-  color: ${({ theme, $isLocked }) =>
-    $isLocked ? theme.colors.textMuted : theme.colors.textMuted};
+  color: ${({ theme }) => theme.colors.textMuted};
   cursor: ${({ $isLocked }) => ($isLocked ? 'not-allowed' : 'grab')};
   opacity: ${({ $isLocked }) => ($isLocked ? 0.4 : 1)};
   flex-shrink: 0;

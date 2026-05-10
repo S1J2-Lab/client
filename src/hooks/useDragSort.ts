@@ -104,12 +104,6 @@ export function useDragSort<T>({
         isDragFromHandleRef.current = true;
         if (itemEl) {
           itemEl.draggable = true;
-          const cleanup = () => {
-            itemEl.draggable = false;
-            isDragFromHandleRef.current = false;
-            itemEl.removeEventListener('dragend', cleanup);
-          };
-          itemEl.addEventListener('dragend', cleanup);
 
           const onDragStart = (e: DragEvent) => {
             if (!isDragFromHandleRef.current) {
@@ -121,14 +115,23 @@ export function useDragSort<T>({
               e.dataTransfer.effectAllowed = 'move';
               e.dataTransfer.setData('text/plain', String(idx));
             }
-            itemEl.removeEventListener('dragstart', onDragStart);
           };
+
+          const cleanup = () => {
+            itemEl.draggable = false;
+            isDragFromHandleRef.current = false;
+            itemEl.removeEventListener('dragstart', onDragStart);
+            itemEl.removeEventListener('dragend', cleanup);
+            document.removeEventListener('mouseup', cleanup);
+          };
+
           itemEl.addEventListener('dragstart', onDragStart);
+          itemEl.addEventListener('dragend', cleanup);
+          // 드래그 없이 mouseUp만 발생해도 정리되도록 보장
+          document.addEventListener('mouseup', cleanup, { once: true });
         }
       },
-      onMouseUp() {
-        isDragFromHandleRef.current = false;
-      },
+      onMouseUp() {},
       onTouchStart(e) {
         isTouchFromHandleRef.current = true;
         const target = (e.currentTarget as HTMLElement).closest(
