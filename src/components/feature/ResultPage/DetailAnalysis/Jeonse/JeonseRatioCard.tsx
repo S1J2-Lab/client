@@ -50,7 +50,7 @@ export function JeonseRatioCard({ jeonseRatio }: JeonseRatioCardProps) {
           </PriceRow>
 
           <PriceRow>
-            <PriceLabel>최근 최고 시세</PriceLabel>
+            <PriceLabel>최근 시세</PriceLabel>
             <PriceValue>{formatPrice(recentHigh)}</PriceValue>
           </PriceRow>
 
@@ -60,7 +60,7 @@ export function JeonseRatioCard({ jeonseRatio }: JeonseRatioCardProps) {
           </PriceRow>
 
           <PriceRow>
-            <PriceLabel>최근 최저 시세</PriceLabel>
+            <PriceLabel>최저 시세</PriceLabel>
             <PriceValue>{formatPrice(recentLow)}</PriceValue>
           </PriceRow>
         </PriceList>

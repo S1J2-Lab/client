@@ -5,7 +5,7 @@ import { AnalysisIssueList } from '../RegistryContract/AnalysisIssueList';
 import type { RegistryData } from '../../../../../types/registry';
 import { getRegistryAnalysisIssues } from '../../../../../utils/registryAnalysis';
 
-const PREVIEW_COUNT = 3;
+const PREVIEW_COUNT = 2;
 
 interface RegistryAnalysisCardProps {
   registry: RegistryData;
