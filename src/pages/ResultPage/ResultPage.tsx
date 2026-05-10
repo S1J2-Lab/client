@@ -5,19 +5,69 @@ import { ResultAddressCard } from '../../components/feature/ResultPage/ResultAdd
 import { ResultTabs } from '../../components/feature/ResultPage/ResultTabs';
 import { DetailAnalysisSection } from './DetailAnalysisSection';
 import { ChecklistSection } from './ChecklistSection';
+import type { ResultData } from '../../types/result';
 
 type ResultTab = 'detail' | 'checklist' | 'caution';
+
+const result: ResultData = {
+  address: '서울특별시 강남구 테헤란로 123',
+  analyzedAt: '2026-05-07T14:30:00+09:00',
+  jeonseRatio: {
+    ratioType: 'jeonse',
+    ratioPercent: 72.5,
+    riskLevel: 'caution',
+    recentHigh: 450000000,
+    recentLow: 320000000,
+    average: 385000000,
+    convertedDeposit: 380000000,
+    sampleCount: 8,
+    lowReliability: false,
+  },
+  registry: {
+    mortgageCount: 1,
+    mortgages: [
+      {
+        bank: '국민은행',
+        amount: 200000000,
+      },
+    ],
+    totalMortgage: 200000000,
+    trustWarning: false,
+    priorLease: false,
+    ownershipChangeRecent: false,
+  },
+  building: {
+    primaryUse: '아파트',
+    isResidential: true,
+    violation: false,
+    approvedDate: '2010-03-15',
+    redevelopmentZone: false,
+  },
+  contract: {
+    toxicClauses: [
+      {
+        level: 'danger',
+        title: '임의 해지 조항',
+        originalText: '임대인은 사전 통보 없이 계약을 해지할 수 있다.',
+        legalIssue: '임차인의 주거 안정권을 침해하는 일방적 조항입니다.',
+        precedent: '대법원 2019다12345',
+        suggestion: '해당 조항 삭제 또는 임차인 동의 요건 추가를 요구하세요.',
+      },
+    ],
+    cautionClauses: [],
+  },
+};
 
 export function ResultPage() {
   const [activeTab, setActiveTab] = useState<ResultTab>('detail');
 
   return (
     <Page>
-      <ResultAddressCard address="서울특별시 강남구 테헤란로 123" />
+      <ResultAddressCard address={result.address} />
 
       <ResultTabs activeTab={activeTab} onChangeTab={setActiveTab} />
 
-      {activeTab === 'detail' && <DetailAnalysisSection />}
+      {activeTab === 'detail' && <DetailAnalysisSection result={result} />}
       {activeTab === 'checklist' && <ChecklistSection />}
       {activeTab === 'caution' && <CautionSection />}
     </Page>

@@ -43,5 +43,4 @@ const DetailButton = styled.button`
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
-  transform: translateY(9px);
 `;
