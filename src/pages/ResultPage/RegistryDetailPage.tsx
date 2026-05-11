@@ -4,6 +4,7 @@ import { FileText } from 'lucide-react';
 import { AnalysisDetailSection } from '../../components/feature/ResultPage/DetailAnalysis/RegistryContract/AnalysisDetailSection';
 import { getRegistryAnalysisIssues } from '../../utils/registryAnalysis';
 import type { RegistryData } from '../../types/registry';
+import { getAnalysisResultFromStorage } from '../../utils/analysisStorage';
 
 interface LocationState {
   registry?: RegistryData;
@@ -13,7 +14,9 @@ export function RegistryDetailPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const registry = (location.state as LocationState | null)?.registry;
+  const registry =
+    (location.state as LocationState | null)?.registry ??
+    getAnalysisResultFromStorage()?.registry;
 
   const items = useMemo(
     () => (registry ? getRegistryAnalysisIssues(registry) : []),

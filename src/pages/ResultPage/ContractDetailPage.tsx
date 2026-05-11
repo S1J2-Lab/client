@@ -4,6 +4,7 @@ import { ScrollText } from 'lucide-react';
 import { AnalysisDetailSection } from '../../components/feature/ResultPage/DetailAnalysis/RegistryContract/AnalysisDetailSection';
 import type { ContractData } from '../../types/contract';
 import { getContractAnalysisIssues } from '../../utils/contractAnalysis';
+import { getAnalysisResultFromStorage } from '../../utils/analysisStorage';
 
 interface LocationState {
   contract?: ContractData;
@@ -13,7 +14,9 @@ export function ContractDetailPage() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const contract = (location.state as LocationState | null)?.contract;
+  const contract =
+    (location.state as LocationState | null)?.contract ??
+    getAnalysisResultFromStorage()?.contract;
 
   const items = useMemo(
     () => (contract ? getContractAnalysisIssues(contract) : []),

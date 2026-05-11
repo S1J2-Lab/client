@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { ResultAddressCard } from '../../components/feature/ResultPage/ResultAddressCard';
@@ -6,60 +6,69 @@ import { ResultTabs } from '../../components/feature/ResultPage/ResultTabs';
 import { DetailAnalysisSection } from './DetailAnalysisSection';
 import { ChecklistSection } from './ChecklistSection';
 import type { ResultData } from '../../types/result';
+import { useLocation } from 'react-router-dom';
+import { getAnalysisResult } from '../../api/result';
+import { getApiErrorMessage, type ApiError } from '../../api/error';
+import {
+  getAnalysisSessionId,
+  saveAnalysisResult,
+} from '../../utils/analysisStorage';
 
 type ResultTab = 'detail' | 'checklist' | 'caution';
 
-const result: ResultData = {
-  address: '서울특별시 강남구 테헤란로 123',
-  analyzedAt: '2026-05-07T14:30:00+09:00',
-  jeonseRatio: {
-    ratioType: 'jeonse',
-    ratioPercent: 72.5,
-    riskLevel: 'caution',
-    recentHigh: 450000000,
-    recentLow: 320000000,
-    average: 385000000,
-    convertedDeposit: 380000000,
-    sampleCount: 8,
-    lowReliability: false,
-  },
-  registry: {
-    mortgageCount: 1,
-    mortgages: [
-      {
-        bank: '국민은행',
-        amount: 200000000,
-      },
-    ],
-    totalMortgage: 200000000,
-    trustWarning: false,
-    priorLease: false,
-    ownershipChangeRecent: false,
-  },
-  building: {
-    primaryUse: '아파트',
-    isResidential: true,
-    violation: false,
-    approvedDate: '2010-03-15',
-    redevelopmentZone: false,
-  },
-  contract: {
-    toxicClauses: [
-      {
-        level: 'danger',
-        title: '임의 해지 조항',
-        originalText: '임대인은 사전 통보 없이 계약을 해지할 수 있다.',
-        legalIssue: '임차인의 주거 안정권을 침해하는 일방적 조항입니다.',
-        precedent: '대법원 2019다12345',
-        suggestion: '해당 조항 삭제 또는 임차인 동의 요건 추가를 요구하세요.',
-      },
-    ],
-    cautionClauses: [],
-  },
-};
-
 export function ResultPage() {
+  const location = useLocation();
+  const sessionId = location.state?.sessionId ?? getAnalysisSessionId();
+
   const [activeTab, setActiveTab] = useState<ResultTab>('detail');
+  const [result, setResult] = useState<ResultData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    if (!sessionId) {
+      setErrorMessage('분석 세션 정보가 없어 결과를 불러오지 못했어요');
+      setIsLoading(false);
+      return;
+    }
+    const fetchResult = async () => {
+      try {
+        const data = await getAnalysisResult(sessionId);
+
+        setResult(data);
+        saveAnalysisResult(data);
+      } catch (error) {
+        setErrorMessage(getApiErrorMessage(error as ApiError));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchResult();
+  }, [sessionId]);
+
+  if (isLoading) {
+    return (
+      <Page>
+        <Section>
+          <SectionTitle>결과를 불러오는 중이에요</SectionTitle>
+          <Description>잠시만 기다려주세요.</Description>
+        </Section>
+      </Page>
+    );
+  }
+
+  if (errorMessage) {
+    return (
+      <Page>
+        <Section>
+          <SectionTitle>결과를 불러오지 못했어요</SectionTitle>
+          <Description>{errorMessage}</Description>
+        </Section>
+      </Page>
+    );
+  }
+  if (!result) return null;
 
   return (
     <Page>
