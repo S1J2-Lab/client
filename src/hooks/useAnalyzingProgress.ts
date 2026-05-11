@@ -40,27 +40,11 @@ export function useAnalyzingProgress({
   };
 
   const completeStep = (completedStepId: AnalysisStepId) => {
-    setSteps((prevSteps) => {
-      const completedIndex = prevSteps.findIndex(
-        (step) => step.id === completedStepId,
-      );
-
-      if (completedIndex === -1) {
-        return prevSteps;
-      }
-
-      return prevSteps.map((step, index) => {
-        if (index <= completedIndex) {
-          return { ...step, status: 'done' };
-        }
-
-        if (index === completedIndex + 1) {
-          return { ...step, status: 'loading' };
-        }
-
-        return { ...step, status: 'pending' };
-      });
-    });
+    setSteps((prevSteps) =>
+      prevSteps.map((step) =>
+        step.id === completedStepId ? { ...step, status: 'done' } : step,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -70,12 +54,15 @@ export function useAnalyzingProgress({
     }
 
     const eventSource = createAnalysisStream(sessionId);
+    const completedSteps = new Set<AnalysisStepId>();
+    let isCompleted = false;
 
     eventSource.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data) as AnalysisStreamMessage;
 
         if (data.step === 'complete') {
+          isCompleted = true;
           setSteps((prevSteps) =>
             prevSteps.map((step) => ({ ...step, status: 'done' })),
           );
@@ -85,19 +72,25 @@ export function useAnalyzingProgress({
         }
 
         if (data.step === 'error') {
+          isCompleted = true;
           onError(ANALYSIS_ERROR_MESSAGES.analysisFailed);
           eventSource.close();
           return;
         }
 
-        completeStep(data.step);
+        if (!completedSteps.has(data.step)) {
+          completedSteps.add(data.step);
+          completeStep(data.step);
+        }
       } catch {
+        isCompleted = true;
         onError(ANALYSIS_ERROR_MESSAGES.analysisFailed);
         eventSource.close();
       }
     };
 
     eventSource.onerror = () => {
+      if (isCompleted) return;
       onError(ANALYSIS_ERROR_MESSAGES.streamConnectionError);
       eventSource.close();
     };
