@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../components/common/Button';
 import { AddressSection } from './AddressSection';
@@ -12,9 +12,15 @@ import type {
   UploadedFile,
   UploaderKey,
 } from '../../constants/uploadedFile';
-import { initAnalysis } from '../../api/analyzing';
+import { initAnalysis, runAnalysis } from '../../api/analyzing';
 import { getApiErrorMessage, type ApiError } from '../../api/error';
-import { saveAnalysisSessionId } from '../../utils/analysisStorage';
+import {
+  saveAnalysisSessionId,
+  getAnalysisSessionId,
+  getRegistrySessionId,
+  getContractSessionId,
+  clearAnalysisStorage,
+} from '../../utils/analysisStorage';
 
 const INPUT_STEPS = ['address', 'contract', 'upload'] as const;
 
@@ -52,14 +58,15 @@ export function InputPage() {
   const [orderConfirmed, setOrderConfirmed] = useState<OrderConfirmMap>(
     INITIAL_ORDER_CONFIRMED,
   );
-  const [analysisSessionId, setAnalysisSessionId] = useState<string | null>(
-    null,
-  );
   const [scanSessionIds, setScanSessionIds] = useState<
     Partial<Record<UploaderKey, string>>
   >({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState('');
+
+  useEffect(() => {
+    clearAnalysisStorage();
+  }, []);
 
   const currentStep = INPUT_STEPS[currentStepIndex];
 
@@ -80,7 +87,8 @@ export function InputPage() {
   const isUploadStepNextDisabled =
     !isBothScanned ||
     !isOwnerVerifyConfirmed ||
-    (hasMultiPageFiles && !isOrderConfirmed);
+    (hasMultiPageFiles && !isOrderConfirmed) ||
+    isSubmitting;
 
   const handleContractNext = async () => {
     if (!selectedAddress || !startDate || !endDate) return;
@@ -107,7 +115,6 @@ export function InputPage() {
       });
 
       saveAnalysisSessionId(id);
-      setAnalysisSessionId(id);
       setCurrentStepIndex((prev) => Math.min(prev + 1, INPUT_STEPS.length - 1));
     } catch (error) {
       setSubmitError(getApiErrorMessage(error as ApiError));
@@ -116,9 +123,29 @@ export function InputPage() {
     }
   };
 
-  const handleUploadNext = () => {
-    if (!analysisSessionId) return;
-    navigate('/analyze', { state: { sessionId: analysisSessionId } });
+  const handleUploadNext = async () => {
+    const sessionId = getAnalysisSessionId();
+    const registrySessionId = getRegistrySessionId();
+    const contractSessionId = getContractSessionId();
+
+    if (!sessionId || !registrySessionId || !contractSessionId) return;
+
+    setIsSubmitting(true);
+    setSubmitError('');
+
+    try {
+      await runAnalysis({
+        sessionId,
+        registrySessionId,
+        contractSessionId,
+        ownerVerified: isOwnerVerifyConfirmed,
+      });
+      navigate('/analyze', { state: { sessionId } });
+    } catch (error) {
+      setSubmitError(getApiErrorMessage(error as ApiError));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleNext = () => {
@@ -217,6 +244,8 @@ export function InputPage() {
             onOwnerVerifyConfirmChange={setIsOwnerVerifyConfirmed}
           />
 
+          {submitError && <ErrorText>{submitError}</ErrorText>}
+
           <ButtonArea>
             <Button
               variant="outline"
@@ -234,7 +263,7 @@ export function InputPage() {
               onClick={handleUploadNext}
               disabled={isUploadStepNextDisabled}
             >
-              다음: 분석 시작하기
+              {isSubmitting ? '분석 준비 중...' : '다음: 분석 시작하기'}
             </Button>
           </ButtonArea>
         </>
