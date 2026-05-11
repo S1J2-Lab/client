@@ -41,7 +41,6 @@ export function AppRouter() {
         }
       >
         <Route path="/" element={<LandingPage />} />
-        <Route path="/analyze" element={<AnalysisLoadingPage />} />
       </Route>
 
       <Route
@@ -49,7 +48,7 @@ export function AppRouter() {
           <Layout
             header={
               <Header
-                title="지켜줘홈즈"
+                title="정보 입력"
                 left={
                   <Button
                     variant="ghost"
@@ -62,11 +61,37 @@ export function AppRouter() {
                 }
               />
             }
-            stepIndicator={<StepIndicator currentStep={1} totalSteps={4} />}
+            stepIndicator={<StepIndicator currentStep={1} totalSteps={3} />}
           />
         }
       >
         <Route path="/input" element={<InputPage />} />
+      </Route>
+
+      <Route
+        element={
+          <Layout
+            header={
+              <Header
+                title="계약 분석 중"
+                left={
+                  <Button
+                    variant="ghost"
+                    tone="blue"
+                    size="md"
+                    iconStart={<House />}
+                    aria-label="홈"
+                    onClick={() => navigate('/')}
+                  />
+                }
+              />
+            }
+            stepIndicator={<StepIndicator currentStep={2} totalSteps={3} />}
+            noPadding
+          />
+        }
+      >
+        <Route path="/analyze" element={<AnalysisLoadingPage />} />
       </Route>
 
       <Route
@@ -87,6 +112,7 @@ export function AppRouter() {
                 }
               />
             }
+            stepIndicator={<StepIndicator currentStep={3} totalSteps={3} />}
           />
         }
       >
