@@ -174,7 +174,7 @@ export function InputPage() {
         <>
           <AddressSection
             selectedAddress={selectedAddress}
-            onSelect={setSelectedAddress}
+            onSelectAddress={setSelectedAddress}
           />
 
           <ButtonArea>

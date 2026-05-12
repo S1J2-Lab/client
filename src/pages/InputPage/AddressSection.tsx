@@ -1,18 +1,20 @@
+import { useEffect } from 'react';
+import styled from '@emotion/styled';
+
 import { Card } from '../../components/common/Card';
 import { useAddressSearch } from '../../hooks/useAddressSearch';
 import type { Address } from '../../types/address';
 import { AddressSearchInput } from '../../components/feature/InputPage/AddressSection/AddressSearchInput';
 import { AddressSearchResult } from '../../components/feature/InputPage/AddressSection/AddressSearchResult';
-import styled from '@emotion/styled';
 
 interface AddressSectionProps {
   selectedAddress: Address | null;
-  onSelect: (address: Address) => void;
+  onSelectAddress: (address: Address) => void;
 }
 
 export function AddressSection({
   selectedAddress,
-  onSelect,
+  onSelectAddress,
 }: AddressSectionProps) {
   const {
     keyword,
@@ -27,8 +29,14 @@ export function AddressSection({
     errorMessage,
   } = useAddressSearch();
 
+  useEffect(() => {
+    if (selectedAddress) {
+      setKeyword(selectedAddress.roadAddress);
+    }
+  }, [selectedAddress, setKeyword]);
+
   const handleSelectAddress = (address: Address) => {
-    onSelect(address);
+    onSelectAddress(address);
     setKeyword(address.roadAddress);
   };
 
