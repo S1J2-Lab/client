@@ -1,5 +1,5 @@
 import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import { House, ChevronLeft } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
 import { LandingPage } from '../pages/LandingPage/LandingPage';
 import { InputPage } from '../pages/InputPage/InputPage';
@@ -41,16 +41,6 @@ export function AppRouter() {
                 <Header
                   title="지켜줘홈즈"
                   logo={<HeaderLogo src={logoImage} alt="지켜줘홈즈 로고" />}
-                  // left={
-                  //   <Button
-                  //     variant="ghost"
-                  //     tone="blue"
-                  //     size="md"
-                  //     iconStart={<House />}
-                  //     aria-label="홈"
-                  //     onClick={() => navigate('/')}
-                  //   />
-                  // }
                 />
               }
               noPadding
@@ -96,9 +86,9 @@ export function AppRouter() {
                       variant="ghost"
                       tone="blue"
                       size="md"
-                      iconStart={<House />}
-                      aria-label="홈"
-                      onClick={() => navigate('/')}
+                      iconStart={<ChevronLeft />}
+                      aria-label="이전"
+                      onClick={() => navigate(-1)}
                     />
                   }
                 />
