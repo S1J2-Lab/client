@@ -18,7 +18,7 @@ export function PdfAnalysisDetailBlock({
   icon,
   items,
   showRowDivider = false,
-  emptyMessage,
+  emptyMessage = '확인이 필요한 분석 내역이 없어요.',
 }: PdfAnalysisDetailBlockProps) {
   const hasItems = items.length > 0;
 

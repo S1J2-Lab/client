@@ -75,7 +75,7 @@ export function ResultPage() {
     );
   }
 
-  if (errorMessage) {
+  if (errorMessage && !result) {
     return (
       <Page>
         <StateCard>

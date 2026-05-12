@@ -12,7 +12,7 @@ export function AnalysisIssueList({
   items,
   showRowDivider = false,
   isPreview = false,
-  emptyMessage = '분석된 항목이 없어요.',
+  emptyMessage = '확인이 필요한 분석 내역이 없어요.',
 }: AnalysisIssueListProps) {
   if (items.length === 0) {
     return <EmptyText>{emptyMessage}</EmptyText>;

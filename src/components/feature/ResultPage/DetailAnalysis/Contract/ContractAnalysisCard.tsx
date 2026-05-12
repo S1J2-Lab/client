@@ -17,15 +17,14 @@ export function ContractAnalysisCard({
   onClickDetail,
 }: ContractAnalysisCardProps) {
   const allItems = getContractAnalysisIssues(contract);
-  const hasItems = allItems.length > 0;
   const previewItems = allItems.slice(0, PREVIEW_COUNT);
-
+  const hasHiddenItems = allItems.length > PREVIEW_COUNT;
   return (
     <AnalysisCard
       icon={<ScrollText />}
       title="임대차계약서 분석"
       right={
-        hasItems &&
+        hasHiddenItems &&
         onClickDetail && (
           <DetailButton type="button" onClick={onClickDetail}>
             전체보기 &gt;
@@ -37,7 +36,7 @@ export function ContractAnalysisCard({
         items={previewItems}
         showRowDivider
         isPreview
-        emptyMessage="확인이 필요한 등기 정보가 없어요."
+        emptyMessage="확인이 필요한 임대차계약서 정보가 없어요."
       />
     </AnalysisCard>
   );

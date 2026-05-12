@@ -18,14 +18,13 @@ export function RegistryAnalysisCard({
 }: RegistryAnalysisCardProps) {
   const allItems = getRegistryAnalysisIssues(registry);
   const previewItems = allItems.slice(0, PREVIEW_COUNT);
-  const hasItems = allItems.length > 0;
-
+  const hasHiddenItems = allItems.length > PREVIEW_COUNT;
   return (
     <AnalysisCard
       icon={<FileText />}
       title="등기부등본 분석"
       right={
-        hasItems &&
+        hasHiddenItems &&
         onClickDetail && (
           <DetailButton type="button" onClick={onClickDetail}>
             전체보기 &gt;
@@ -36,7 +35,7 @@ export function RegistryAnalysisCard({
       <AnalysisIssueList
         items={previewItems}
         isPreview
-        emptyMessage="확인이 필요한 특약 사항이 없어요."
+        emptyMessage="확인이 필요한 등기부등본 정보가 없어요."
       />{' '}
     </AnalysisCard>
   );
