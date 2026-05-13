@@ -28,9 +28,7 @@ export function JeonseRatioCard({ jeonseRatio }: JeonseRatioCardProps) {
 
   const hasMarketData = (sampleCount ?? 0) > 0;
   const safeRatio = Math.min(Math.max(ratioPercent ?? 0, 0), 100);
-  const notice = hasMarketData
-    ? getRatioNotice(safeRatio)
-    : '최근 거래량이 없어 전세가율을 계산하기 어려워요. 주변 시세를 추가로 확인해 주세요.';
+  const notice = getRatioNotice(riskLevel, sampleCount);
 
   return (
     <AnalysisCard
